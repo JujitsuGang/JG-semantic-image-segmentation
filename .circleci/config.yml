@@ -1,0 +1,45 @@
+
+version: 2.1
+
+orbs:
+  ssh-deployment: singularitynet/ssh-deployment@2.4.1
+
+jobs:
+  semantic-segmentation:
+    docker:
+      - image: circleci/python:3.6.6-node
+    steps:
+      - checkout
+      - ssh-deployment/deploy:
+          ssh-host: ${SSH_HOST}
+          ssh-user: ${SSH_USER}
+          mainnet-port: "7008"
+          testnet-port: "6306"
+          run-command: "python3.6 run_service.py --ssl"
+          docker-test-files: "Dockerfile, requirements.txt"
+          docker-file-path: "Dockerfile"
+          docker-no-cache: true
+          docker-image: "semantic_segmentation"
+          docker-container: "SEMANTIC_SEGMENTATION"
+          docker-nvidia: true
+          docker-volumes: "-v ~/singnet/.certs:/opt/singnet/.certs"
+          infura-api-key: ${INFURA_API_KEY}
+          daemon-version: ${CI_SNETD_VERSION}
+          daemon-pk: ${PK_SEMANTIC_SEGMENTATION}
+  testing:
+    docker:
+      - image: circleci/python:3.6.6-node
+    steps:
+        - ssh-deployment/test:
+              ssh-host: ${SSH_HOST}
+              ssh-user: ${SSH_USER}
+              test-command: "sleep 10;python3.6 test_service.py auto"
+              docker-container: "SEMANTIC_SEGMENTATION"
+
+workflows:
+  build_deploy:
+    jobs:
+      - semantic-segmentation
+      - testing:
+            requires:
+                - semantic-segmentation
