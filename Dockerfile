@@ -8,4 +8,7 @@ ARG snetd_version
 ENV SINGNET_DIR=/opt/singnet
 ENV SERVICE_NAME=semantic-segmentation
 
-RUN mkdir -p ${SI
+RUN mkdir -p ${SINGNET_DIR}
+
+RUN apt-get update && apt-get install -y software-properties-common
+RUN add-apt-repositor
