@@ -14,4 +14,5 @@ RUN apt-get update && apt-get install -y software-properties-common
 RUN add-apt-repository -y ppa:deadsnakes/ppa && \
       apt-get update && \
       apt-get upgrade -y && \
-      apt-get install 
+      apt-get install -y python3.6 python3.6-dev build-essential cmake libgtk2.0-dev python3.6-tk && \
+      curl https
