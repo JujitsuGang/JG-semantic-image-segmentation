@@ -11,4 +11,7 @@ ENV SERVICE_NAME=semantic-segmentation
 RUN mkdir -p ${SINGNET_DIR}
 
 RUN apt-get update && apt-get install -y software-properties-common
-RUN add-apt-repositor
+RUN add-apt-repository -y ppa:deadsnakes/ppa && \
+      apt-get update && \
+      apt-get upgrade -y && \
+      apt-get install 
