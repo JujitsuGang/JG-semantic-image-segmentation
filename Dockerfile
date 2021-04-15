@@ -18,4 +18,11 @@ RUN add-apt-repository -y ppa:deadsnakes/ppa && \
       curl https://bootstrap.pypa.io/get-pip.py | python3.6
 
 RUN apt-get update && \
-    apt-get install -y 
+    apt-get install -y \
+    git \
+    wget \
+    nano \
+    curl
+
+# Install snet daemon
+RUN SNETD_GIT_VERSION=`curl -s https://
