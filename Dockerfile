@@ -25,4 +25,4 @@ RUN apt-get update && \
     curl
 
 # Install snet daemon
-RUN SNETD_GIT_VERSION=`curl -s https://
+RUN SNETD_GIT_VERSION=`curl -s https://api.github.com/repos/singnet/snet-daemon/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")' || echo "v5.0.1"` &&
