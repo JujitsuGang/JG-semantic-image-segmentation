@@ -33,4 +33,7 @@ RUN SNETD_GIT_VERSION=`curl -s https://api.github.com/repos/singnet/snet-daemon/
     mv snet-daemon-${SNETD_VERSION}-linux-amd64/snetd /usr/bin/snetd && \
     rm -rf snet-daemon-*
 
-RUN cd ${SINGNET_DIR} &&
+RUN cd ${SINGNET_DIR} && \
+    git clone -b ${git_branch} https://github.com/${git_owner}/${git_repo}.git
+
+RUN cd ${SINGNET_DIR
