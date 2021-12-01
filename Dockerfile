@@ -42,4 +42,6 @@ RUN cd ${SINGNET_DIR}/${SERVICE_NAME} && \
     sh buildproto.sh && \
     python3.6 fetch_models.py /caches/models
 
-RUN cd ${SINGNET_DIR}/${SE
+RUN cd ${SINGNET_DIR}/${SERVICE_NAME} && \
+    git submodule update --init -- mask_rcnn && \
+    cd mask_rcnn && \
