@@ -38,4 +38,8 @@ RUN cd ${SINGNET_DIR} && \
 
 RUN cd ${SINGNET_DIR}/${SERVICE_NAME} && \
     pip3.6 install -U pip==20.3.4 && \
-    pip3.6 install -r require
+    pip3.6 install -r requirements.txt && \
+    sh buildproto.sh && \
+    python3.6 fetch_models.py /caches/models
+
+RUN cd ${SINGNET_DIR}/${SE
