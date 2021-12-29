@@ -45,3 +45,6 @@ RUN cd ${SINGNET_DIR}/${SERVICE_NAME} && \
 RUN cd ${SINGNET_DIR}/${SERVICE_NAME} && \
     git submodule update --init -- mask_rcnn && \
     cd mask_rcnn && \
+    pip3.6 install -r requirements.txt
+
+WORKDIR ${SINGNET_DIR}/${SERVICE_NAME}
