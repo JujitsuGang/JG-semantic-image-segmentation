@@ -8,4 +8,7 @@ import base64
 import warnings
 
 from services.snet import snet_setup
-from
+from services import registry
+
+import services.service_spec.segmentation_pb2_grpc as grpc_bt_grpc
+import service
