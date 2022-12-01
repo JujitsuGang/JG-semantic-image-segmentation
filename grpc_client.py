@@ -16,4 +16,6 @@ import services.service_spec.segmentation_pb2 as grpc_bt_pb2
 SERVER_NAME = 'mask_rcnn_server'
 
 
-def save_img(fn, 
+def save_img(fn, pb_img):
+    #binary_image = base64.b64decode(pb_img.content)
+    img_data = io.BytesIO(pb_img.conten
