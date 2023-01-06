@@ -29,4 +29,5 @@ def main():
 
     default_endpoint = "127.0.0.1:{}".format(registry[SERVER_NAME]['grpc'])
     parser.add_argument("--endpoint", help="grpc server to connect to", default=default_endpoint,
-                    
+                        type=str, required=False)
+    parser.add_argument("--snet", help="call services on SingularityN
