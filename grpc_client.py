@@ -23,4 +23,8 @@ def save_img(fn, pb_img):
     skimage.io.imsave(fn, img)
 
 
-def main()
+def main():
+    script_name = sys.argv[0]
+    parser = argparse.ArgumentParser(prog=script_name)
+
+    def
