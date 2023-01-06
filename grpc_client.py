@@ -27,4 +27,5 @@ def main():
     script_name = sys.argv[0]
     parser = argparse.ArgumentParser(prog=script_name)
 
-    def
+    default_endpoint = "127.0.0.1:{}".format(registry[SERVER_NAME]['grpc'])
+    parser.add_argum
