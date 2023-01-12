@@ -32,4 +32,5 @@ def main():
                         type=str, required=False)
     parser.add_argument("--snet", help="call services on SingularityNet - requires configured snet CLI",
                         action='store_true')
-    parser.add_argum
+    parser.add_argument("--image", help="path to image to apply face detection on",
+                        type=str, re
