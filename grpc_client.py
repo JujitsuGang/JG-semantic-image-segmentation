@@ -34,4 +34,6 @@ def main():
                         action='store_true')
     parser.add_argument("--image", help="path to image to apply face detection on",
                         type=str, required=True)
-    parser.add_argument("--save-debug", help="Filename to save image to, with the rois and mas
+    parser.add_argument("--save-debug", help="Filename to save image to, with the rois and masks on the original RGB image",
+                        type=str, required=False)
+    parser.add_argument(
