@@ -36,4 +36,5 @@ def main():
                         type=str, required=True)
     parser.add_argument("--save-debug", help="Filename to save image to, with the rois and masks on the original RGB image",
                         type=str, required=False)
-    parser.add_argument(
+    parser.add_argument("--save-masks", help="Directory to save binary masks for each object segmented",
+           
