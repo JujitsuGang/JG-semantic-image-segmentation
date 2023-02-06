@@ -40,4 +40,7 @@ def main():
                         type=str, required=False)
     args = parser.parse_args(sys.argv[1:])
 
-    channel = grpc.insecure_channel("{}".fo
+    channel = grpc.insecure_channel("{}".format(args.endpoint))
+    stub = grpc_bt_grpc.SemanticSegmentationStub(channel)
+
+    with open(args
