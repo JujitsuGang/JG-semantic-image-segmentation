@@ -43,4 +43,8 @@ def main():
     channel = grpc.insecure_channel("{}".format(args.endpoint))
     stub = grpc_bt_grpc.SemanticSegmentationStub(channel)
 
-    with open(args
+    with open(args.image, "rb") as f:
+        img_data = f.read()
+
+    img = grpc_bt_pb2.Image(content=img_data)
+    req
