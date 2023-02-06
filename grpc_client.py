@@ -37,4 +37,7 @@ def main():
     parser.add_argument("--save-debug", help="Filename to save image to, with the rois and masks on the original RGB image",
                         type=str, required=False)
     parser.add_argument("--save-masks", help="Directory to save binary masks for each object segmented",
-           
+                        type=str, required=False)
+    args = parser.parse_args(sys.argv[1:])
+
+    channel = grpc.insecure_channel("{}".fo
