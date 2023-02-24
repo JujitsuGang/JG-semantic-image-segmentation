@@ -51,4 +51,5 @@ def main():
 
     metadata=[]
     if args.snet:
-        endpoint, j
+        endpoint, job_address, job_signature = snet_setup(service_name="semantic_segmentation", max_price=100000000)
+      
