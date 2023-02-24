@@ -47,4 +47,8 @@ def main():
         img_data = f.read()
 
     img = grpc_bt_pb2.Image(content=img_data)
-    req
+    request = grpc_bt_pb2.Request(img=img, visualise=True)
+
+    metadata=[]
+    if args.snet:
+        endpoint, j
