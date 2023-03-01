@@ -58,4 +58,6 @@ def main():
 
     print("Classes detected:", response.class_names)
 
-   
+    if args.save_debug:
+        save_img(args.save_debug, response.debug_img)
+    if args.save_ma
