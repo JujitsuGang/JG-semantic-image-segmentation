@@ -60,4 +60,6 @@ def main():
 
     if args.save_debug:
         save_img(args.save_debug, response.debug_img)
-    if args.save_ma
+    if args.save_masks:
+        # skimage annoying spams warnings when the mask is below a certain pixel area
+        # prop
