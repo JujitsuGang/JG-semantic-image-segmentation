@@ -66,4 +66,8 @@ def main():
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             for i, m in enumerate(response.segmentation_img):
-                save_img(os.pa
+                save_img(os.path.join(args.save_masks, "mask_" + str(i) + ".png"), m)
+
+
+if __name__ == '__main__':
+    main()
