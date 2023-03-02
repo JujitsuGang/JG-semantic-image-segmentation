@@ -64,4 +64,6 @@ def main():
         # skimage annoying spams warnings when the mask is below a certain pixel area
         # proportional to the image size.
         with warnings.catch_warnings():
-            warnings.simple
+            warnings.simplefilter("ignore")
+            for i, m in enumerate(response.segmentation_img):
+                save_img(os.pa
