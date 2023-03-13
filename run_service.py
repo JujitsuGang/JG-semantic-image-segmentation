@@ -92,3 +92,50 @@ def start_service(cwd, service_module, run_daemon, run_ssl):
                 snetd_configs["payment_channel_key_path"] = "/opt/singnet/.certs/client-key.pem"
             pvt_key_for_metering = os.environ.get("PVT_KEY_FOR_METERING", "")
             if pvt_key_for_metering:
+                snetd_configs["metering_enabled"] = True
+                snetd_configs["metering_end_point"] = "https://marketplace-mt-v2.singularitynet.io"
+                snetd_configs["pvt_key_for_metering"] = pvt_key_for_metering
+            infura_key = os.environ.get("INFURA_API_KEY", "")
+            if infura_key:
+                snetd_configs["ethereum_json_rpc_endpoint"] = "https://{}.infura.io/{}".format(_network, infura_key)
+        with open(conf, "w") as f:
+            json.dump(snetd_configs, f, sort_keys=True, indent=4)
+    
+    all_p = []
+    if run_daemon:
+        for config_file in glob.glob("./snetd_configs/*.json"):
+            add_extra_configs(config_file)
+            all_p.append(start_snetd(str(cwd), config_file))
+    service_name = service_module.split(".")[-1]
+    grpc_port = registry[service_name]["grpc"]
+    p = subprocess.Popen([
+        sys.executable,
+        "-m",
+        service_module,
+        "--grpc-port",
+        str(grpc_port)], cwd=str(cwd))
+    all_p.append(p)
+    return all_p
+
+
+def start_snetd(cwd, config_file=None):
+    """
+    Starts the Daemon "snetd":
+    """
+    cmd = ["snetd", "serve"]
+    if config_file:
+        cmd = ["snetd", "serve", "--config", config_file]
+    return subprocess.Popen(cmd, cwd=str(cwd))
+
+
+def kill_and_exit(all_p):
+    for p in all_p:
+        try:
+            os.kill(p.pid, signal.SIGTERM)
+        except Exception as e:
+            log.error(e)
+    exit(1)
+
+
+if __name__ == "__main__":
+    main()
