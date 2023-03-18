@@ -143,3 +143,15 @@ def segment_image(img, visualize=False):
     masks = r['masks']
     r['masks'] = []
     for i in range(masks.shape[2]):
+        # convert mask arrays into gray-scale pngs, then base64 encode them
+        buff = io.BytesIO()
+        # skimage annoying spams warnings when the mask is below a certain pixel area
+        # proportional to the image size.
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            skimage.io.imsave(buff, img_as_uint(masks[:, :, i]))
+        r['masks'].append(buff.getvalue())
+    
+    del model
+    sess.close()
+    return r

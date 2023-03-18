@@ -1,0 +1,97 @@
+
+import sys
+import logging
+import io
+import grpc
+import argparse
+import os.path
+import time
+import concurrent.futures
+import multiprocessing as mp
+
+import skimage.io
+
+from services import registry
+import services.common
+import services.service_spec.segmentation_pb2 as ss_pb
+import services.service_spec.segmentation_pb2_grpc as ss_grpc
+
+logging.basicConfig(level=10, format="%(asctime)s - [%(levelname)8s] - %(name)s - %(message)s")
+log = logging.getLogger(__package__ + "." + __name__)
+
+
+class SegmentationServicer(ss_grpc.SemanticSegmentationServicer):
+    def __init__(self, q):
+        self.q = q
+        pass
+
+    def segment(self, request, context):
+        # Marshal input
+        image = request.img.content
+        mimetype = request.img.mimetype
+
+        img_data = io.BytesIO(image)
+        img = skimage.io.imread(img_data)
+
+        # Drop alpha channel if it exists
+        if img.shape[-1] == 4:
+            img = img[:, :, :3]
+            log.debug("Dropping alpha channel from image")
+
+        self.q.send((img,))
+        result = self.q.recv()
+        if isinstance(result, Exception):
+            raise result
+
+        # Marshal output
+        pb_result = ss_pb.Result(
+            segmentation_img=[ss_pb.Image(content=i) for i in result["masks"]],
+            debug_img=ss_pb.Image(content=result["resultImage"]),
+            class_ids=[class_id for class_id in result["class_ids"]],
+            class_names=[n for n in result["class_names"]],
+            scores=[n for n in result["scores"]]
+            # known_classes=[n for n in result["known_classes"]],
+        )
+
+        return pb_result
+
+
+def serve(dispatch_queue, max_workers=1, port=7777):
+    assert max_workers == 1, "No support for more than one worker"
+    server = grpc.server(concurrent.futures.ThreadPoolExecutor(max_workers=max_workers))
+    ss_grpc.add_SemanticSegmentationServicer_to_server(SegmentationServicer(dispatch_queue), server)
+    server.add_insecure_port("[::]:{}".format(port))
+    return server
+
+
+def main_loop(dispatch_queue, grpc_serve_function, grpc_port, grpc_args=None):
+    if grpc_args is None:
+        grpc_args = dict()
+
+    server = None
+    if grpc_serve_function is not None:
+        server = grpc_serve_function(dispatch_queue, port=grpc_port, **grpc_args)
+        server.start()
+
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        server.stop(0)
+
+
+def worker(q):
+    while True:
+        try:
+            item = q.recv()
+            with mp.Pool(1) as p:
+                result = p.apply(services.common.segment_image, (item[0], True))
+            q.send(result)
+        except Exception as e:
+            q.send(e)
+
+
+def main():
+    script_name = __file__
+    parser = argparse.ArgumentParser(prog=script_name)
+    server_name = os.path.splitext(os.path.basename(script_name))[0]
