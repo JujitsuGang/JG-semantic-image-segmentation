@@ -95,3 +95,26 @@ def main():
     script_name = __file__
     parser = argparse.ArgumentParser(prog=script_name)
     server_name = os.path.splitext(os.path.basename(script_name))[0]
+    parser.add_argument("--grpc-port",
+                        help="port to bind grpc services to",
+                        default=registry[server_name]['grpc'],
+                        type=int,
+                        required=False)
+    args = parser.parse_args(sys.argv[1:])
+
+    # Need queue system and spawning grpc server in separate process because of:
+    # https://github.com/grpc/grpc/issues/16001
+
+    pipe = mp.Pipe()
+    p = mp.Process(target=main_loop, args=(pipe[0], serve, args.grpc_port))
+    p.start()
+
+    w = mp.Process(target=worker, args=(pipe[1],))
+    w.start()
+
+    p.join()
+    w.join()
+
+
+if __name__ == "__main__":
+    main()
