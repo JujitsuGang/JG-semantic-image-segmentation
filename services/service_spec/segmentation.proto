@@ -20,4 +20,8 @@ message RegionOfInterest {
 message Result {
     repeated Image segmentation_img = 1;
     repeated RegionOfInterest rois = 2;
-    repeated float
+    repeated float scores = 3;
+    repeated uint32 class_ids = 4;
+    repeated string class_names = 5;
+    Image debug_img = 7;
+}
