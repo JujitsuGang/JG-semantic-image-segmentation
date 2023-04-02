@@ -17,4 +17,7 @@ message RegionOfInterest {
     uint32 h = 4;
 }
 
-messa
+message Result {
+    repeated Image segmentation_img = 1;
+    repeated RegionOfInterest rois = 2;
+    repeated float
