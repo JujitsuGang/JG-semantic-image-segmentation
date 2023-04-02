@@ -2,4 +2,12 @@ syntax = "proto3";
 
 message Image {
   string mimetype = 1;
-  bytes content = 2
+  bytes content = 2;
+}
+
+message Request {
+    Image img = 1;
+    bool visualise = 2;
+}
+
+message Re
