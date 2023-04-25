@@ -34,4 +34,5 @@ message MetaResult {
 
 service SemanticSegmentation {
     rpc segment(Request) returns (Result) {}
-    rpc meta(MetaRequest) returns (
+    rpc meta(MetaRequest) returns (MetaResult) {}
+}
