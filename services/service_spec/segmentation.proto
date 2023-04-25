@@ -32,4 +32,6 @@ message MetaResult {
     string known_classes = 1;
 }
 
-service Semanti
+service SemanticSegmentation {
+    rpc segment(Request) returns (Result) {}
+    rpc meta(MetaRequest) returns (
