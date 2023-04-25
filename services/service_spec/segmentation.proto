@@ -25,3 +25,11 @@ message Result {
     repeated string class_names = 5;
     Image debug_img = 7;
 }
+
+message MetaRequest {}
+
+message MetaResult {
+    string known_classes = 1;
+}
+
+service Semanti
