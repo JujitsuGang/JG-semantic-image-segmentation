@@ -5,4 +5,8 @@
   "passthrough_endpoint": "http://localhost:7003",
   "blockchain_network_selected": "main",
   "organization_id": "snet",
-  "servic
+  "service_id": "semantic-segmentation",
+  "log": {
+    "level": "debug",
+    "output": {
+      "
