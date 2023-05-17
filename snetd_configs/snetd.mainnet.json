@@ -9,4 +9,5 @@
   "log": {
     "level": "debug",
     "output": {
-      "
+      "current_link": "./snetd-mainnet.log",
+      "file_pattern": "./snetd-mainnet.%Y%m%d.log",
