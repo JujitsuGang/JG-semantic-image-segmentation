@@ -11,3 +11,7 @@
     "output": {
       "current_link": "./snetd-mainnet.log",
       "file_pattern": "./snetd-mainnet.%Y%m%d.log",
+      "rotation_count": 0,
+      "rotation_time_in_sec": 86400,
+      "type": "file"
+   
